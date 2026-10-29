@@ -155,6 +155,29 @@ ofdmframegen ofdmframegen_create(unsigned int    _M,
     return q;
 }
 
+// copy object including all internal objects and state
+ofdmframegen ofdmframegen_copy(ofdmframegen q_orig)
+{
+    // validate input
+    if (q_orig == NULL)
+        return liquid_error_config("ofdmframegen_copy(), object cannot be NULL");
+
+    // create new object from parameters (sets transform, PLCP, and taper)
+    ofdmframegen q_copy = ofdmframegen_create(q_orig->M,
+                                              q_orig->cp_len,
+                                              q_orig->taper_len,
+                                              q_orig->p);
+
+    // copy overlapping symbol buffer
+    memmove(q_copy->postfix, q_orig->postfix, q_orig->taper_len*sizeof(float complex));
+
+    // replace pilot sequence generator with copy of original's state
+    msequence_destroy(q_copy->ms_pilot);
+    q_copy->ms_pilot = msequence_copy(q_orig->ms_pilot);
+
+    return q_copy;
+}
+
 // free transform object memory
 int ofdmframegen_destroy(ofdmframegen _q)
 {

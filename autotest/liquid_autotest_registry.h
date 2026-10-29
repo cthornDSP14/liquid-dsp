@@ -1298,6 +1298,7 @@ extern struct liquid_autotest_s ofdmframesync_acquire_n256_s;
 extern struct liquid_autotest_s ofdmframesync_acquire_n512_s;
 extern struct liquid_autotest_s ofdmframe_common_config_s;
 extern struct liquid_autotest_s ofdmframegen_config_s;
+extern struct liquid_autotest_s ofdmframegen_copy_s;
 extern struct liquid_autotest_s ofdmframesync_config_s;
 // ./src/nco/tests/nco_crcf_autotest.c
 extern struct liquid_autotest_s nco_crcf_constrain_s;
@@ -2679,6 +2680,7 @@ liquid_autotest liquid_autotest_registry[] =
     &ofdmframesync_acquire_n512_s,
     &ofdmframe_common_config_s,
     &ofdmframegen_config_s,
+    &ofdmframegen_copy_s,
     &ofdmframesync_config_s,
     &nco_crcf_constrain_s,
     &nco_crcf_copy_s,

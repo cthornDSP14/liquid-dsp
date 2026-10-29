@@ -9752,6 +9752,9 @@ ofdmframegen ofdmframegen_create(unsigned int    _M,
                                  unsigned int    _taper_len,
                                  unsigned char * _p);
 
+// Copy object including all internal objects and state
+ofdmframegen ofdmframegen_copy(ofdmframegen _q);
+
 // Destroy OFDM framing generator object
 int ofdmframegen_destroy(ofdmframegen _q);
 

@@ -186,7 +186,7 @@ LIQUID_AUTOTEST(ofdmframegen_config,"check ofdmframegen configuration","multicha
 {
     _liquid_error_downgrade_enable();
     // check invalid function calls
-    //LIQUID_CHECK(NULL ==ofdmframegen_copy(NULL));
+    LIQUID_CHECK(NULL ==ofdmframegen_copy(NULL));
     LIQUID_CHECK(NULL ==ofdmframegen_create( 0, 16, 4, NULL)) // too few subcarriers
     LIQUID_CHECK(NULL ==ofdmframegen_create( 7, 16, 4, NULL)) // too few subcarriers
     LIQUID_CHECK(NULL ==ofdmframegen_create(65, 16, 4, NULL)) // odd-length subcarriers
@@ -200,6 +200,55 @@ LIQUID_AUTOTEST(ofdmframegen_config,"check ofdmframegen configuration","multicha
 
     ofdmframegen_destroy(q);
     _liquid_error_downgrade_disable();
+}
+
+LIQUID_AUTOTEST(ofdmframegen_copy,"copying from one ofdmframegen object to another","multichannel,ofdmframe",0.1)
+{
+    // options
+    unsigned int M         = 64;    // number of subcarriers
+    unsigned int cp_len    = 16;    // cyclic prefix length
+    unsigned int taper_len = 4;     // taper length
+    unsigned int num_symbols = 6;   // number of data symbols to write after copy
+
+    // create original object and write preamble and a few symbols to
+    // advance internal state (pilot sequence, postfix buffer)
+    ofdmframegen q_orig = ofdmframegen_create(M, cp_len, taper_len, NULL);
+
+    float complex X[M];                 // data symbols
+    float complex y_orig[M + cp_len];   // output from original
+    float complex y_copy[M + cp_len];   // output from copy
+    unsigned int i, j;
+
+    ofdmframegen_write_S0a(q_orig, y_orig);
+    ofdmframegen_write_S0b(q_orig, y_orig);
+    ofdmframegen_write_S1 (q_orig, y_orig);
+    for (i=0; i<3; i++) {
+        for (j=0; j<M; j++)
+            X[j] = cexpf(_Complex_I*2*M_PI*randf());
+        ofdmframegen_writesymbol(q_orig, X, y_orig);
+    }
+
+    // copy object
+    ofdmframegen q_copy = ofdmframegen_copy(q_orig);
+    LIQUID_REQUIRE( q_copy != NULL );
+
+    // write the same symbols to both objects and compare outputs
+    for (i=0; i<num_symbols; i++) {
+        for (j=0; j<M; j++)
+            X[j] = cexpf(_Complex_I*2*M_PI*randf());
+        ofdmframegen_writesymbol(q_orig, X, y_orig);
+        ofdmframegen_writesymbol(q_copy, X, y_copy);
+        LIQUID_CHECK_ARRAY(y_orig, y_copy, (M + cp_len)*sizeof(float complex));
+    }
+
+    // compare tails
+    ofdmframegen_writetail(q_orig, y_orig);
+    ofdmframegen_writetail(q_copy, y_copy);
+    LIQUID_CHECK_ARRAY(y_orig, y_copy, taper_len*sizeof(float complex));
+
+    // destroy objects
+    ofdmframegen_destroy(q_orig);
+    ofdmframegen_destroy(q_copy);
 }
 
 LIQUID_AUTOTEST(ofdmframesync_config,"check ofdmframesync configuration","multichannel,ofdmframe",0.1)

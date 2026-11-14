@@ -175,19 +175,18 @@ int fec_conv_punctured_decode_hard(fec             _q,
     unsigned int k=0;   // input bit index (0<=k<8)
     unsigned int p=0;   // puncturing matrix column index
     unsigned char bit;
-    unsigned char byte_in = _msg_enc[n];
     for (i=0; i<num_enc_bits; i+=_q->R) {
         //
         for (r=0; r<_q->R; r++) {
             if (_q->puncturing_matrix[r*(_q->P)+p]) {
-                // push bit from input
-                bit = (byte_in >> (7-k)) & 0x01;
+                // push bit from input (read the byte only when needed so
+                // as not to read past the end of the encoded message)
+                bit = (_msg_enc[n] >> (7-k)) & 0x01;
                 _q->enc_bits[i+r] = bit ? LIQUID_SOFTBIT_1 : LIQUID_SOFTBIT_0;
                 k++;
                 if (k==8) {
                     k = 0;
                     n++;
-                    byte_in = _msg_enc[n];
                 }
             } else {
                 // push erasure

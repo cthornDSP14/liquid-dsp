@@ -30,24 +30,8 @@ void testbench_fec_copy(liquid_autotest __q__, fec_scheme _fs)
 {
 #if !LIBFEC_ENABLED
     switch (_fs) {
-    case LIQUID_FEC_CONV_V27:
-    case LIQUID_FEC_CONV_V29:
-    case LIQUID_FEC_CONV_V39:
-    case LIQUID_FEC_CONV_V615:
-    case LIQUID_FEC_CONV_V27P23:
-    case LIQUID_FEC_CONV_V27P34:
-    case LIQUID_FEC_CONV_V27P45:
-    case LIQUID_FEC_CONV_V27P56:
-    case LIQUID_FEC_CONV_V27P67:
-    case LIQUID_FEC_CONV_V27P78:
-    case LIQUID_FEC_CONV_V29P23:
-    case LIQUID_FEC_CONV_V29P34:
-    case LIQUID_FEC_CONV_V29P45:
-    case LIQUID_FEC_CONV_V29P56:
-    case LIQUID_FEC_CONV_V29P67:
-    case LIQUID_FEC_CONV_V29P78:
     case LIQUID_FEC_RS_M8:
-        LIQUID_WARN("convolutional, Reed-Solomon codes unavailable (install libfec)");
+        LIQUID_WARN("Reed-Solomon codes unavailable (install libfec)");
         return;
     default:;
     }

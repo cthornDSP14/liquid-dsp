@@ -471,6 +471,23 @@ extern int fec_conv29_poly[2];
 extern int fec_conv39_poly[3];
 extern int fec_conv615_poly[6];
 
+// portable Viterbi decoder (used when libfec is not available); methods
+// share the signatures of libfec's so they fit the fec_s function pointers
+typedef struct fec_viterbi_s * fec_viterbi;
+fec_viterbi fec_viterbi_create(unsigned int _K,
+                               unsigned int _R,
+                               const int *  _poly,
+                               unsigned int _max_bits);
+void * fec_viterbi_create_v27 (int _len);
+void * fec_viterbi_create_v29 (int _len);
+void * fec_viterbi_create_v39 (int _len);
+void * fec_viterbi_create_v615(int _len);
+void   fec_viterbi_destroy    (void * _q);
+int    fec_viterbi_init       (void * _q, int _starting_state);
+int    fec_viterbi_update_blk (void * _q, unsigned char * _syms, int _nbits);
+int    fec_viterbi_chainback  (void * _q, unsigned char * _data,
+                               unsigned int _nbits, unsigned int _endstate);
+
 // convolutional code puncturing matrices  [R x P]
 extern int fec_conv27p23_matrix[4];     // [2 x 2]
 extern int fec_conv27p34_matrix[6];     // [2 x 3]

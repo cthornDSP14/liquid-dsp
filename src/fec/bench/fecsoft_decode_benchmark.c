@@ -49,25 +49,9 @@ void fecsoft_decode_bench(
     void * _opts)
 {
 #if !LIBFEC_ENABLED
-    if ( _fs == LIQUID_FEC_CONV_V27    ||
-         _fs == LIQUID_FEC_CONV_V29    ||
-         _fs == LIQUID_FEC_CONV_V39    ||
-         _fs == LIQUID_FEC_CONV_V615   ||
-         _fs == LIQUID_FEC_CONV_V27P23 ||
-         _fs == LIQUID_FEC_CONV_V27P34 ||
-         _fs == LIQUID_FEC_CONV_V27P45 ||
-         _fs == LIQUID_FEC_CONV_V27P56 ||
-         _fs == LIQUID_FEC_CONV_V27P67 ||
-         _fs == LIQUID_FEC_CONV_V27P78 ||
-         _fs == LIQUID_FEC_CONV_V29P23 ||
-         _fs == LIQUID_FEC_CONV_V29P34 ||
-         _fs == LIQUID_FEC_CONV_V29P45 ||
-         _fs == LIQUID_FEC_CONV_V29P56 ||
-         _fs == LIQUID_FEC_CONV_V29P67 ||
-         _fs == LIQUID_FEC_CONV_V29P78 ||
-         _fs == LIQUID_FEC_RS_M8)
+    if (_fs == LIQUID_FEC_RS_M8)
     {
-        liquid_error(LIQUID_EUMODE,"convolutional, Reed-Solomon codes unavailable (install libfec)");
+        liquid_error(LIQUID_EUMODE,"Reed-Solomon codes unavailable (install libfec)");
         getrusage(RUSAGE_SELF, _start);
         memmove((void*)_finish,(void*)_start,sizeof(struct rusage));
         return;

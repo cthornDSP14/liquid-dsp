@@ -74,7 +74,7 @@ int liquid_print_fec_schemes()
     printf("          ");
     for (i=0; i<LIQUID_FEC_NUM_SCHEMES; i++) {
 #if !LIBFEC_ENABLED
-        if ( fec_scheme_is_convolutional(i) || fec_scheme_is_reedsolomon(i) )
+        if ( fec_scheme_is_reedsolomon(i) )
             continue;
 #endif
         printf("%s", fec_scheme_str[i][0]);
@@ -221,7 +221,6 @@ unsigned int fec_get_enc_msg_length(fec_scheme   _scheme,
     case LIQUID_FEC_SECDED3932:     return _msg_len + _msg_len/4 + ((_msg_len%4) ? 1 : 0);
     case LIQUID_FEC_SECDED7264:     return _msg_len + _msg_len/8 + ((_msg_len%8) ? 1 : 0);
 
-#if LIBFEC_ENABLED
     // convolutional codes
     case LIQUID_FEC_CONV_V27:       return 2*_msg_len + 2;  // (K-1)/r=12, round up to 2 bytes
     case LIQUID_FEC_CONV_V29:       return 2*_msg_len + 2;  // (K-1)/r=16, 2 bytes
@@ -241,29 +240,10 @@ unsigned int fec_get_enc_msg_length(fec_scheme   _scheme,
     case LIQUID_FEC_CONV_V29P67:    return fec_conv_get_enc_msg_len(_msg_len,9,6);
     case LIQUID_FEC_CONV_V29P78:    return fec_conv_get_enc_msg_len(_msg_len,9,7);
 
+#if LIBFEC_ENABLED
     // Reed-Solomon codes
     case LIQUID_FEC_RS_M8:          return fec_rs_get_enc_msg_len(_msg_len,32,255,223);
 #else
-    case LIQUID_FEC_CONV_V27:
-    case LIQUID_FEC_CONV_V29:
-    case LIQUID_FEC_CONV_V39:
-    case LIQUID_FEC_CONV_V615:
-
-    case LIQUID_FEC_CONV_V27P23:
-    case LIQUID_FEC_CONV_V27P34:
-    case LIQUID_FEC_CONV_V27P45:
-    case LIQUID_FEC_CONV_V27P56:
-    case LIQUID_FEC_CONV_V27P67:
-    case LIQUID_FEC_CONV_V27P78:
-
-    case LIQUID_FEC_CONV_V29P23:
-    case LIQUID_FEC_CONV_V29P34:
-    case LIQUID_FEC_CONV_V29P45:
-    case LIQUID_FEC_CONV_V29P56:
-    case LIQUID_FEC_CONV_V29P67:
-    case LIQUID_FEC_CONV_V29P78:
-        liquid_error(LIQUID_EUMODE,"fec_get_enc_msg_length(), convolutional codes unavailable (install libfec)");
-        break;
     case LIQUID_FEC_RS_M8:
         liquid_error(LIQUID_EUMODE,"fec_get_enc_msg_length(), Reed-Solomon codes unavailable (install libfec)");
         break;
@@ -413,7 +393,6 @@ float fec_get_rate(fec_scheme _scheme)
     case LIQUID_FEC_SECDED7264:     return 8./9.;
 
     // convolutional codes
-#if LIBFEC_ENABLED
     case LIQUID_FEC_CONV_V27:       return 1./2.;
     case LIQUID_FEC_CONV_V29:       return 1./2.;
     case LIQUID_FEC_CONV_V39:       return 1./3.;
@@ -431,29 +410,10 @@ float fec_get_rate(fec_scheme _scheme)
     case LIQUID_FEC_CONV_V29P67:    return 6./7.;
     case LIQUID_FEC_CONV_V29P78:    return 7./8.;
 
+#if LIBFEC_ENABLED
     // Reed-Solomon codes
     case LIQUID_FEC_RS_M8:          return 223./255.;
 #else
-    case LIQUID_FEC_CONV_V27:
-    case LIQUID_FEC_CONV_V29:
-    case LIQUID_FEC_CONV_V39:
-    case LIQUID_FEC_CONV_V615:
-
-    case LIQUID_FEC_CONV_V27P23:
-    case LIQUID_FEC_CONV_V27P34:
-    case LIQUID_FEC_CONV_V27P45:
-    case LIQUID_FEC_CONV_V27P56:
-    case LIQUID_FEC_CONV_V27P67:
-    case LIQUID_FEC_CONV_V27P78:
-
-    case LIQUID_FEC_CONV_V29P23:
-    case LIQUID_FEC_CONV_V29P34:
-    case LIQUID_FEC_CONV_V29P45:
-    case LIQUID_FEC_CONV_V29P56:
-    case LIQUID_FEC_CONV_V29P67:
-    case LIQUID_FEC_CONV_V29P78:
-        liquid_error(LIQUID_EUMODE,"fec_get_rate(), convolutional codes unavailable (install libfec)");
-        return 0.0f;
     case LIQUID_FEC_RS_M8:
         liquid_error(LIQUID_EUMODE,"fec_get_rate(), Reed-Solomon codes unavailable (install libfec)");
         return 0.0f;
@@ -489,7 +449,6 @@ fec fec_create(fec_scheme _scheme, void *_opts)
     case LIQUID_FEC_SECDED7264: return fec_secded7264_create(_opts);
 
     // convolutional codes
-#if LIBFEC_ENABLED
     case LIQUID_FEC_CONV_V27:
     case LIQUID_FEC_CONV_V29:
     case LIQUID_FEC_CONV_V39:
@@ -512,30 +471,11 @@ fec fec_create(fec_scheme _scheme, void *_opts)
     case LIQUID_FEC_CONV_V29P78:
         return fec_conv_punctured_create(_scheme);
 
+#if LIBFEC_ENABLED
     // Reed-Solomon codes
     case LIQUID_FEC_RS_M8:
         return fec_rs_create(_scheme);
 #else
-    case LIQUID_FEC_CONV_V27:
-    case LIQUID_FEC_CONV_V29:
-    case LIQUID_FEC_CONV_V39:
-    case LIQUID_FEC_CONV_V615:
-
-    case LIQUID_FEC_CONV_V27P23:
-    case LIQUID_FEC_CONV_V27P34:
-    case LIQUID_FEC_CONV_V27P45:
-    case LIQUID_FEC_CONV_V27P56:
-    case LIQUID_FEC_CONV_V27P67:
-    case LIQUID_FEC_CONV_V27P78:
-
-    case LIQUID_FEC_CONV_V29P23:
-    case LIQUID_FEC_CONV_V29P34:
-    case LIQUID_FEC_CONV_V29P45:
-    case LIQUID_FEC_CONV_V29P56:
-    case LIQUID_FEC_CONV_V29P67:
-    case LIQUID_FEC_CONV_V29P78:
-        liquid_error(LIQUID_EUMODE,"fec_create(), convolutional codes unavailable (install libfec)");
-        return NULL;
     case LIQUID_FEC_RS_M8:
         liquid_error(LIQUID_EUMODE,"fec_create(), Reed-Solomon codes unavailable (install libfec)");
         return NULL;
@@ -599,7 +539,6 @@ int fec_destroy(fec _q)
     case LIQUID_FEC_SECDED7264: return fec_secded7264_destroy(_q);
 
     // convolutional codes
-#if LIBFEC_ENABLED
     case LIQUID_FEC_CONV_V27:
     case LIQUID_FEC_CONV_V29:
     case LIQUID_FEC_CONV_V39:
@@ -621,27 +560,11 @@ int fec_destroy(fec _q)
     case LIQUID_FEC_CONV_V29P78:
         return fec_conv_punctured_destroy(_q);
 
+#if LIBFEC_ENABLED
     // Reed-Solomon codes
     case LIQUID_FEC_RS_M8:
         return fec_rs_destroy(_q);
 #else
-    case LIQUID_FEC_CONV_V27:
-    case LIQUID_FEC_CONV_V29:
-    case LIQUID_FEC_CONV_V39:
-    case LIQUID_FEC_CONV_V615:
-    case LIQUID_FEC_CONV_V27P23:
-    case LIQUID_FEC_CONV_V27P34:
-    case LIQUID_FEC_CONV_V27P45:
-    case LIQUID_FEC_CONV_V27P56:
-    case LIQUID_FEC_CONV_V27P67:
-    case LIQUID_FEC_CONV_V27P78:
-    case LIQUID_FEC_CONV_V29P23:
-    case LIQUID_FEC_CONV_V29P34:
-    case LIQUID_FEC_CONV_V29P45:
-    case LIQUID_FEC_CONV_V29P56:
-    case LIQUID_FEC_CONV_V29P67:
-    case LIQUID_FEC_CONV_V29P78:
-        return liquid_error(LIQUID_EUMODE,"fec_destroy(), convolutional codes unavailable (install libfec)");
     case LIQUID_FEC_RS_M8:
         return liquid_error(LIQUID_EUMODE,"fec_destroy(), Reed-Solomon codes unavailable (install libfec)");
 #endif

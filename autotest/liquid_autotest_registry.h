@@ -134,6 +134,28 @@ extern struct liquid_autotest_s fec_is_convolutional_s;
 extern struct liquid_autotest_s fec_is_punctured_s;
 extern struct liquid_autotest_s fec_is_reedsolomon_s;
 extern struct liquid_autotest_s fec_is_hamming_s;
+// ./src/fec/tests/fec_conv_autotest.c
+extern struct liquid_autotest_s fec_conv_errors_v27_s;
+extern struct liquid_autotest_s fec_conv_errors_v29_s;
+extern struct liquid_autotest_s fec_conv_errors_v39_s;
+extern struct liquid_autotest_s fec_conv_errors_v615_s;
+extern struct liquid_autotest_s fec_conv_errors_v27p23_s;
+extern struct liquid_autotest_s fec_conv_errors_v27p34_s;
+extern struct liquid_autotest_s fec_conv_errors_v27p45_s;
+extern struct liquid_autotest_s fec_conv_errors_v27p56_s;
+extern struct liquid_autotest_s fec_conv_errors_v27p67_s;
+extern struct liquid_autotest_s fec_conv_errors_v27p78_s;
+extern struct liquid_autotest_s fec_conv_errors_v29p23_s;
+extern struct liquid_autotest_s fec_conv_errors_v29p34_s;
+extern struct liquid_autotest_s fec_conv_errors_v29p45_s;
+extern struct liquid_autotest_s fec_conv_errors_v29p56_s;
+extern struct liquid_autotest_s fec_conv_errors_v29p67_s;
+extern struct liquid_autotest_s fec_conv_errors_v29p78_s;
+extern struct liquid_autotest_s fec_conv_soft_weak_errors_s;
+extern struct liquid_autotest_s fec_conv_erasures_s;
+extern struct liquid_autotest_s fec_viterbi_k3_vector_s;
+extern struct liquid_autotest_s fec_viterbi_blocks_s;
+extern struct liquid_autotest_s fec_viterbi_config_s;
 // ./src/fec/tests/fec_copy_autotest.c
 extern struct liquid_autotest_s fec_copy_r3_s;
 extern struct liquid_autotest_s fec_copy_r5_s;
@@ -1628,6 +1650,27 @@ liquid_autotest liquid_autotest_registry[] =
     &fec_is_punctured_s,
     &fec_is_reedsolomon_s,
     &fec_is_hamming_s,
+    &fec_conv_errors_v27_s,
+    &fec_conv_errors_v29_s,
+    &fec_conv_errors_v39_s,
+    &fec_conv_errors_v615_s,
+    &fec_conv_errors_v27p23_s,
+    &fec_conv_errors_v27p34_s,
+    &fec_conv_errors_v27p45_s,
+    &fec_conv_errors_v27p56_s,
+    &fec_conv_errors_v27p67_s,
+    &fec_conv_errors_v27p78_s,
+    &fec_conv_errors_v29p23_s,
+    &fec_conv_errors_v29p34_s,
+    &fec_conv_errors_v29p45_s,
+    &fec_conv_errors_v29p56_s,
+    &fec_conv_errors_v29p67_s,
+    &fec_conv_errors_v29p78_s,
+    &fec_conv_soft_weak_errors_s,
+    &fec_conv_erasures_s,
+    &fec_viterbi_k3_vector_s,
+    &fec_viterbi_blocks_s,
+    &fec_viterbi_config_s,
     &fec_copy_r3_s,
     &fec_copy_r5_s,
     &fec_copy_h74_s,

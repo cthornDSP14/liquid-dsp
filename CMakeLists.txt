@@ -346,6 +346,7 @@ add_library(fec OBJECT
     src/fec/src/fec_secded2216.c
     src/fec/src/fec_secded3932.c
     src/fec/src/fec_secded7264.c
+    src/fec/src/fec_viterbi.c
     src/fec/src/interleaver.c
     src/fec/src/packetizer.c
     src/fec/src/sumproduct.c)
@@ -810,6 +811,7 @@ set(AUTOTESTS
     ${PROJECT_SOURCE_DIR}/src/fec/tests/crc_autotest.c
     ${PROJECT_SOURCE_DIR}/src/fec/tests/fec_autotest.c
     ${PROJECT_SOURCE_DIR}/src/fec/tests/fec_config_autotest.c
+    ${PROJECT_SOURCE_DIR}/src/fec/tests/fec_conv_autotest.c
     ${PROJECT_SOURCE_DIR}/src/fec/tests/fec_copy_autotest.c
     ${PROJECT_SOURCE_DIR}/src/fec/tests/fec_soft_autotest.c
     ${PROJECT_SOURCE_DIR}/src/fec/tests/fec_golay2412_autotest.c

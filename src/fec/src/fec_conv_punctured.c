@@ -33,6 +33,7 @@
 
 #if LIBFEC_ENABLED
 #include "fec.h"
+#endif
 
 fec fec_conv_punctured_create(fec_scheme _fs)
 {
@@ -111,7 +112,7 @@ int fec_conv_punctured_encode(fec _q,
             for (r=0; r<_q->R; r++) {
                 // enable output determined by puncturing matrix
                 if (_q->puncturing_matrix[r*(_q->P)+p]) {
-                    byte_out = (byte_out<<1) | parity(sr & _q->poly[r]);
+                    byte_out = (byte_out<<1) | liquid_count_ones_mod2(sr & _q->poly[r]);
                     _msg_enc[n/8] = byte_out;
                     n++;
                 } else {
@@ -133,7 +134,7 @@ int fec_conv_punctured_encode(fec _q,
         // compute parity bits for each polynomial
         for (r=0; r<_q->R; r++) {
             if (_q->puncturing_matrix[r*(_q->P)+p]) {
-                byte_out = (byte_out<<1) | parity(sr & _q->poly[r]);
+                byte_out = (byte_out<<1) | liquid_count_ones_mod2(sr & _q->poly[r]);
                 _msg_enc[n/8] = byte_out;
                 n++;
             }
@@ -440,34 +441,4 @@ int fec_conv_init_v29p78(fec _q)
     return LIQUID_OK;
 }
 
-#else   // LIBFEC_ENABLED
-
-fec fec_conv_punctured_create(fec_scheme _fs)
-{
-    return liquid_error_config("fec_conv_create(), libfec not installed");
-}
-
-int fec_conv_punctured_destroy(fec _q)
-{
-    return liquid_error(LIQUID_EUMODE,"fec_conv_punctured_destroy(), libfec not installed");
-}
-
-int fec_conv_punctured_encode(fec             _q,
-                              unsigned int    _dec_msg_len,
-                              unsigned char * _msg_dec,
-                              unsigned char * _msg_enc)
-{
-    return liquid_error(LIQUID_EUMODE,"fec_conv_punctured_encode(), libfec not installed");
-}
-
-//unsigned int
-int fec_conv_punctured_decode(fec             _q,
-                              unsigned int    _dec_msg_len,
-                              unsigned char * _msg_enc,
-                              unsigned char * _msg_dec)
-{
-    return liquid_error(LIQUID_EUMODE,"fec_conv_punctured_decode(), libfec not installed");
-}
-
-#endif  // LIBFEC_ENABLED
 

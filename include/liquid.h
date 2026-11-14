@@ -270,7 +270,7 @@ typedef enum {
     //  - try to create a modem of type 'LIQUID_MODEM_XXX' which does not exist
     LIQUID_EIMODE,
 
-    // unsupported mode (e.g. LIQUID_FEC_CONV_V27 with 'libfec' not installed)
+    // unsupported mode (e.g. LIQUID_FEC_RS_M8 with 'libfec' not installed)
     LIQUID_EUMODE,
 
     // object has not been created or properly initialized

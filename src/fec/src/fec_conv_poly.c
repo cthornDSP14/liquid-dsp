@@ -26,32 +26,18 @@
 
 #include "liquid.internal.h"
 
-#if LIBFEC_ENABLED
-#include <fec.h>
+// Generator polynomials, identical to libfec's V27POLYA etc. so that
+// encoded streams are compatible whether or not libfec is installed.
+// Bit i of each polynomial taps the input bit from i steps ago (bit 0 is
+// the newest), which is the bit-reversed form of the textbook octal values
+// (e.g. 0x6d = 1101101b is the reverse of 133 octal = 1011011b).
 
-int fec_conv27_poly[2]  = {V27POLYA,
-                           V27POLYB};
+int fec_conv27_poly[2]  = {0x6d, 0x4f};
 
-int fec_conv29_poly[2]  = {V29POLYA,
-                           V29POLYB};
+int fec_conv29_poly[2]  = {0x1af, 0x11d};
 
-int fec_conv39_poly[3]  = {V39POLYA,
-                           V39POLYB,
-                           V39POLYC};
+int fec_conv39_poly[3]  = {0x1ed, 0x19b, 0x127};
 
-int fec_conv615_poly[6] = {V615POLYA,
-                           V615POLYB,
-                           V615POLYC,
-                           V615POLYD,
-                           V615POLYE,
-                           V615POLYF};
-
-#else
-
-int fec_conv27_poly[2]  = {0,0};
-int fec_conv29_poly[2]  = {0,0};
-int fec_conv39_poly[3]  = {0,0,0};
-int fec_conv615_poly[6] = {0,0,0,0,0,0};
-
-#endif
+int fec_conv615_poly[6] = {042631, 047245, 056507,
+                           073363, 077267, 064537};
 

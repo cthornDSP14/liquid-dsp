@@ -33,6 +33,7 @@
 
 #if LIBFEC_ENABLED
 #include "fec.h"
+#endif
 
 fec fec_conv_create(fec_scheme _fs)
 {
@@ -99,7 +100,7 @@ int fec_conv_encode(fec _q,
 
             // compute parity bits for each polynomial
             for (r=0; r<_q->R; r++) {
-                byte_out = (byte_out<<1) | parity(sr & _q->poly[r]);
+                byte_out = (byte_out<<1) | liquid_count_ones_mod2(sr & _q->poly[r]);
                 _msg_enc[n/8] = byte_out;
                 n++;
             }
@@ -113,7 +114,7 @@ int fec_conv_encode(fec _q,
 
         // compute parity bits for each polynomial
         for (r=0; r<_q->R; r++) {
-            byte_out = (byte_out<<1) | parity(sr & _q->poly[r]);
+            byte_out = (byte_out<<1) | liquid_count_ones_mod2(sr & _q->poly[r]);
             _msg_enc[n/8] = byte_out;
             n++;
         }
@@ -242,12 +243,19 @@ int fec_conv_init_v27(fec _q)
     _q->R=2;
     _q->K=7;
     _q->poly = fec_conv27_poly;
-    _q->create_viterbi = create_viterbi27;
-    //_q->set_viterbi_polynomial = set_viterbi27_polynomial;
-    _q->init_viterbi = init_viterbi27;
-    _q->update_viterbi_blk = update_viterbi27_blk;
-    _q->chainback_viterbi = chainback_viterbi27;
-    _q->delete_viterbi = delete_viterbi27;
+#if LIBFEC_ENABLED
+    _q->create_viterbi      = create_viterbi27;
+    _q->init_viterbi        = init_viterbi27;
+    _q->update_viterbi_blk  = update_viterbi27_blk;
+    _q->chainback_viterbi   = chainback_viterbi27;
+    _q->delete_viterbi      = delete_viterbi27;
+#else
+    _q->create_viterbi      = fec_viterbi_create_v27;
+    _q->init_viterbi        = fec_viterbi_init;
+    _q->update_viterbi_blk  = fec_viterbi_update_blk;
+    _q->chainback_viterbi   = fec_viterbi_chainback;
+    _q->delete_viterbi      = fec_viterbi_destroy;
+#endif
     return LIQUID_OK;
 }
 
@@ -256,12 +264,19 @@ int fec_conv_init_v29(fec _q)
     _q->R=2;
     _q->K=9;
     _q->poly = fec_conv29_poly;
-    _q->create_viterbi = create_viterbi29;
-    //_q->set_viterbi_polynomial = set_viterbi29_polynomial;
-    _q->init_viterbi = init_viterbi29;
-    _q->update_viterbi_blk = update_viterbi29_blk;
-    _q->chainback_viterbi = chainback_viterbi29;
-    _q->delete_viterbi = delete_viterbi29;
+#if LIBFEC_ENABLED
+    _q->create_viterbi      = create_viterbi29;
+    _q->init_viterbi        = init_viterbi29;
+    _q->update_viterbi_blk  = update_viterbi29_blk;
+    _q->chainback_viterbi   = chainback_viterbi29;
+    _q->delete_viterbi      = delete_viterbi29;
+#else
+    _q->create_viterbi      = fec_viterbi_create_v29;
+    _q->init_viterbi        = fec_viterbi_init;
+    _q->update_viterbi_blk  = fec_viterbi_update_blk;
+    _q->chainback_viterbi   = fec_viterbi_chainback;
+    _q->delete_viterbi      = fec_viterbi_destroy;
+#endif
     return LIQUID_OK;
 }
 
@@ -270,12 +285,19 @@ int fec_conv_init_v39(fec _q)
     _q->R=3;
     _q->K=9;
     _q->poly = fec_conv39_poly;
-    _q->create_viterbi = create_viterbi39;
-    //_q->set_viterbi_polynomial = set_viterbi39_polynomial;
-    _q->init_viterbi = init_viterbi39;
-    _q->update_viterbi_blk = update_viterbi39_blk;
-    _q->chainback_viterbi = chainback_viterbi39;
-    _q->delete_viterbi = delete_viterbi39;
+#if LIBFEC_ENABLED
+    _q->create_viterbi      = create_viterbi39;
+    _q->init_viterbi        = init_viterbi39;
+    _q->update_viterbi_blk  = update_viterbi39_blk;
+    _q->chainback_viterbi   = chainback_viterbi39;
+    _q->delete_viterbi      = delete_viterbi39;
+#else
+    _q->create_viterbi      = fec_viterbi_create_v39;
+    _q->init_viterbi        = fec_viterbi_init;
+    _q->update_viterbi_blk  = fec_viterbi_update_blk;
+    _q->chainback_viterbi   = fec_viterbi_chainback;
+    _q->delete_viterbi      = fec_viterbi_destroy;
+#endif
     return LIQUID_OK;
 }
 
@@ -284,28 +306,20 @@ int fec_conv_init_v615(fec _q)
     _q->R=6;
     _q->K=15;
     _q->poly = fec_conv615_poly;
-    _q->create_viterbi = create_viterbi615;
-    //_q->set_viterbi_polynomial = set_viterbi615_polynomial;
-    _q->init_viterbi = init_viterbi615;
-    _q->update_viterbi_blk = update_viterbi615_blk;
-    _q->chainback_viterbi = chainback_viterbi615;
-    _q->delete_viterbi = delete_viterbi615;
+#if LIBFEC_ENABLED
+    _q->create_viterbi      = create_viterbi615;
+    _q->init_viterbi        = init_viterbi615;
+    _q->update_viterbi_blk  = update_viterbi615_blk;
+    _q->chainback_viterbi   = chainback_viterbi615;
+    _q->delete_viterbi      = delete_viterbi615;
+#else
+    _q->create_viterbi      = fec_viterbi_create_v615;
+    _q->init_viterbi        = fec_viterbi_init;
+    _q->update_viterbi_blk  = fec_viterbi_update_blk;
+    _q->chainback_viterbi   = fec_viterbi_chainback;
+    _q->delete_viterbi      = fec_viterbi_destroy;
+#endif
     return LIQUID_OK;
 }
 
-
-
-#else   // LIBFEC_ENABLED
-
-fec fec_conv_create(fec_scheme _fs)
-{
-    return liquid_error_config("fec_conv_create(), libfec not installed");
-}
-
-int fec_conv_destroy(fec _q)
-{
-    return liquid_error(LIQUID_EUMODE,"fec_conv_destroy(), libfec not installed");
-}
-
-#endif  // LIBFEC_ENABLED
 

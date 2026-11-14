@@ -48,7 +48,7 @@ Error Codes
 |                       |   does not exist                                                  |
 +-----------------------+-------------------------------------------------------------------+
 | ``LIQUID_EUMODE``     | unsupported mode                                                  |
-|                       | (e.g. ``LIQUID_FEC_CONV_V27`` with 'libfec' not installed)        |
+|                       | (e.g. ``LIQUID_FEC_RS_M8`` with 'libfec' not installed)           |
 +-----------------------+-------------------------------------------------------------------+
 | ``LIQUID_ENOINIT``    | Object has not been created or properly initialized               |
 |                       |                                                                   |
